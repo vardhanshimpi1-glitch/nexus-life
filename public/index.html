@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>NexusLife — Gamify Your Real Life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- LOADING SCREEN -->
+  <div id="loader" class="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">NEXUS<span>LIFE</span></div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      <div class="loader-text">BOOTING LIFE ENGINE...</div>
+    </div>
+  </div>
+
+  <!-- LANDING PAGE -->
+  <div id="page-landing" class="page hidden">
+    <div class="landing-bg">
+      <div class="grid-overlay"></div>
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <nav class="landing-nav">
+      <div class="nav-logo">NEXUS<span>LIFE</span></div>
+      <div class="nav-actions">
+        <button class="btn-ghost" onclick="showPage('page-login')">LOG IN</button>
+        <button class="btn-primary" onclick="showPage('page-onboard')">START FREE</button>
+      </div>
+    </nav>
+    <div class="landing-hero">
+      <div class="hero-tag">LIFE GAMIFICATION SYSTEM</div>
+      <h1 class="hero-title">Your Life.<br><span class="gradient-text">Leveled Up.</span></h1>
+      <p class="hero-sub">Turn your daily habits into XP. Compete with real people. Rise through the ranks. This isn't a habit tracker — it's your life as a game.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary btn-xl" onclick="showPage('page-onboard')">CREATE YOUR CHARACTER →</button>
+        <button class="btn-ghost btn-xl" onclick="showPage('page-login')">ALREADY HAVE ACCOUNT</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hstat-num">5</span><span class="hstat-lbl">LEVELS</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-num">4</span><span class="hstat-lbl">CLASSES</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-num">AI</span><span class="hstat-lbl">COACH</span></div>
+      </div>
+    </div>
+    <div class="landing-cards">
+      <div class="lcard"><div class="lcard-icon">⚔️</div><div class="lcard-title">EARN XP</div><div class="lcard-desc">Complete real-life tasks and habits to gain XP and level up</div></div>
+      <div class="lcard lcard-featured"><div class="lcard-icon">🏆</div><div class="lcard-title">COMPETE</div><div class="lcard-desc">Real-time global leaderboard. See exactly where you rank</div></div>
+      <div class="lcard"><div class="lcard-icon">🤖</div><div class="lcard-title">AI COACH</div><div class="lcard-desc">Personal AI that knows your stats and pushes you forward</div></div>
+    </div>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div id="page-login" class="page hidden">
+    <div class="auth-bg"><div class="grid-overlay"></div></div>
+    <div class="auth-container">
+      <div class="auth-logo" onclick="showPage('page-landing')">NEXUS<span>LIFE</span></div>
+      <div class="auth-card">
+        <h2 class="auth-title">WELCOME BACK</h2>
+        <p class="auth-sub">Log back into your realm</p>
+        <div id="login-error" class="auth-error hidden"></div>
+        <div class="form-group">
+          <label class="form-label">EMAIL</label>
+          <input type="email" id="login-email" class="form-input" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">PASSWORD</label>
+          <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
+        </div>
+        <button class="btn-primary btn-full" onclick="handleLogin()">ENTER REALM →</button>
+        <p class="auth-switch">New here? <a onclick="showPage('page-onboard')">Create your character</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONBOARDING -->
+  <div id="page-onboard" class="page hidden">
+    <div class="auth-bg"><div class="grid-overlay"></div></div>
+    <div class="onboard-container">
+      <div class="auth-logo" onclick="showPage('page-landing')">NEXUS<span>LIFE</span></div>
+      <div class="onboard-progress">
+        <div class="onboard-step" id="ostep-1">01</div>
+        <div class="onboard-line" id="oline-1"></div>
+        <div class="onboard-step" id="ostep-2">02</div>
+        <div class="onboard-line" id="oline-2"></div>
+        <div class="onboard-step" id="ostep-3">03</div>
+        <div class="onboard-line" id="oline-3"></div>
+        <div class="onboard-step" id="ostep-4">04</div>
+      </div>
+
+      <!-- Step 1: Identity -->
+      <div class="onboard-panel active" id="opanel-1">
+        <div class="auth-card">
+          <div class="step-tag">STEP 1 / 4 — IDENTITY</div>
+          <h2 class="auth-title">Who Are You?</h2>
+          <div id="reg-error" class="auth-error hidden"></div>
+          <div class="form-group">
+            <label class="form-label">USERNAME</label>
+            <input type="text" id="reg-username" class="form-input" placeholder="YourHandle" maxlength="20">
+          </div>
+          <div class="form-group">
+            <label class="form-label">EMAIL</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">PASSWORD</label>
+            <input type="password" id="reg-pass" class="form-input" placeholder="Min 6 characters">
+          </div>
+          <button class="btn-primary btn-full" onclick="onboardNext(1)">CONTINUE →</button>
+          <p class="auth-switch">Have an account? <a onclick="showPage('page-login')">Log in</a></p>
+        </div>
+      </div>
+
+      <!-- Step 2: Class -->
+      <div class="onboard-panel hidden" id="opanel-2">
+        <div class="auth-card">
+          <div class="step-tag">STEP 2 / 4 — CHARACTER CLASS</div>
+          <h2 class="auth-title">Choose Your Class</h2>
+          <p class="auth-sub">Defines your identity, default tasks & bonuses</p>
+          <div class="class-grid">
+            <div class="class-card" onclick="selectClass(this,'Warrior')" data-class="Warrior">
+              <div class="class-icon-wrap">⚔️</div>
+              <div class="class-name">WARRIOR</div>
+              <div class="class-desc">Fitness & Physical Power</div>
+            </div>
+            <div class="class-card" onclick="selectClass(this,'Scholar')" data-class="Scholar">
+              <div class="class-icon-wrap">📚</div>
+              <div class="class-name">SCHOLAR</div>
+              <div class="class-desc">Study & Deep Knowledge</div>
+            </div>
+            <div class="class-card" onclick="selectClass(this,'Builder')" data-class="Builder">
+              <div class="class-icon-wrap">🔨</div>
+              <div class="class-name">BUILDER</div>
+              <div class="class-desc">Work, Hustle & Wealth</div>
+            </div>
+            <div class="class-card" onclick="selectClass(this,'Monk')" data-class="Monk">
+              <div class="class-icon-wrap">🧘</div>
+              <div class="class-name">MONK</div>
+              <div class="class-desc">Discipline & Mindset</div>
+            </div>
+          </div>
+          <button class="btn-primary btn-full" id="cls-next-btn" onclick="onboardNext(2)" disabled>CONTINUE →</button>
+          <button class="btn-ghost btn-full" onclick="onboardBack(2)">← BACK</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Goals -->
+      <div class="onboard-panel hidden" id="opanel-3">
+        <div class="auth-card">
+          <div class="step-tag">STEP 3 / 4 — LIFE GOALS</div>
+          <h2 class="auth-title">What Do You Want?</h2>
+          <p class="auth-sub">Select all that apply — personalizes your XP path</p>
+          <div class="goals-grid">
+            <button class="goal-btn" onclick="toggleGoal(this,'Fitness')"><span class="goal-check"></span>💪 Fitness</button>
+            <button class="goal-btn" onclick="toggleGoal(this,'Study')"><span class="goal-check"></span>🧠 Study</button>
+            <button class="goal-btn" onclick="toggleGoal(this,'Money')"><span class="goal-check"></span>💰 Money</button>
+            <button class="goal-btn" onclick="toggleGoal(this,'Discipline')"><span class="goal-check"></span>🎯 Discipline</button>
+            <button class="goal-btn" onclick="toggleGoal(this,'Health')"><span class="goal-check"></span>❤️ Health</button>
+            <button class="goal-btn" onclick="toggleGoal(this,'Social')"><span class="goal-check"></span>🌍 Social</button>
+          </div>
+          <button class="btn-primary btn-full" id="goals-next-btn" onclick="onboardNext(3)" disabled>CONTINUE →</button>
+          <button class="btn-ghost btn-full" onclick="onboardBack(3)">← BACK</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Avatar -->
+      <div class="onboard-panel hidden" id="opanel-4">
+        <div class="auth-card">
+          <div class="step-tag">STEP 4 / 4 — AVATAR</div>
+          <h2 class="auth-title">Pick Your Symbol</h2>
+          <p class="auth-sub">Represents you on the global leaderboard</p>
+          <div class="avatar-grid">
+            <div class="avatar-opt" onclick="selectAvatar(this,'⚡')">⚡</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'🐉')">🐉</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'🦅')">🦅</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'🔱')">🔱</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'💀')">💀</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'🌑')">🌑</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'🔥')">🔥</div>
+            <div class="avatar-opt" onclick="selectAvatar(this,'👁️')">👁️</div>
+          </div>
+          <button class="btn-primary btn-full" id="av-next-btn" onclick="handleRegister()" disabled>ENTER NEXUSLIFE →</button>
+          <button class="btn-ghost btn-full" onclick="onboardBack(4)">← BACK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page hidden">
+    <div class="dash-layout">
+      <!-- Sidebar (desktop) -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">NEXUS<span>LIFE</span></div>
+        <nav class="sidebar-nav">
+          <a class="snav-item active" onclick="switchTab('home',this)" data-tab="home"><span class="snav-icon">⚔️</span>HOME</a>
+          <a class="snav-item" onclick="switchTab('leaderboard',this)" data-tab="leaderboard"><span class="snav-icon">🏆</span>LEADERBOARD</a>
+          <a class="snav-item" onclick="switchTab('coach',this)" data-tab="coach"><span class="snav-icon">🤖</span>AI COACH</a>
+          <a class="snav-item" onclick="switchTab('log',this)" data-tab="log"><span class="snav-icon">📋</span>ACTIVITY</a>
+        </nav>
+        <div class="sidebar-user">
+          <div class="su-avatar" id="su-avatar">⚡</div>
+          <div class="su-info">
+            <div class="su-name" id="su-name">—</div>
+            <div class="su-class" id="su-class">—</div>
+          </div>
+          <button class="logout-btn" onclick="handleLogout()" title="Logout">⏏</button>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="dash-main">
+        <!-- Top bar (mobile) -->
+        <div class="mobile-topbar">
+          <div class="nav-logo">NEXUS<span>LIFE</span></div>
+          <div class="mobile-topbar-right">
+            <div class="streak-chip" id="m-streak">🔥 0</div>
+            <div class="mobile-avatar" id="m-avatar">⚡</div>
+          </div>
+        </div>
+
+        <!-- XP Header -->
+        <div class="xp-header-section">
+          <div class="xp-user-info">
+            <div class="xp-avatar" id="xp-avatar">⚡</div>
+            <div>
+              <div class="xp-username" id="xp-username">—</div>
+              <div class="xp-classlevel" id="xp-classlevel">— · —</div>
+            </div>
+          </div>
+          <div class="xp-right">
+            <div class="streak-chip" id="d-streak">🔥 0</div>
+            <div class="xp-total" id="xp-total">0 XP</div>
+          </div>
+        </div>
+        <div class="xp-bar-section">
+          <div class="xp-bar-labels">
+            <span class="level-badge" id="level-badge">LVL 1</span>
+            <span class="xp-next-label" id="xp-next-label">500 XP to next level</span>
+          </div>
+          <div class="xp-bar-track"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+        </div>
+
+        <!-- Tab: HOME -->
+        <div class="tab-panel active" id="tab-home">
+          <div class="panel-inner">
+            <div class="section-header">
+              <div class="section-title">TODAY'S TASKS</div>
+              <button class="btn-add-task" onclick="openAddTaskModal()">+ ADD TASK</button>
+            </div>
+            <div id="task-list" class="task-list"></div>
+            <div class="stats-grid">
+              <div class="stat-card"><div class="stat-value" id="stat-done" style="color:#00d4aa">0</div><div class="stat-label">COMPLETED</div></div>
+              <div class="stat-card"><div class="stat-value" id="stat-missed" style="color:#ff6b6b">0</div><div class="stat-label">MISSED</div></div>
+              <div class="stat-card"><div class="stat-value" id="stat-xp" style="color:#ffd93d">0</div><div class="stat-label">TOTAL XP</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: LEADERBOARD -->
+        <div class="tab-panel hidden" id="tab-leaderboard">
+          <div class="panel-inner">
+            <div class="section-header">
+              <div class="section-title">GLOBAL RANKING</div>
+              <button class="btn-ghost btn-sm" onclick="loadLeaderboard()">↻ REFRESH</button>
+            </div>
+            <div id="lb-list" class="lb-list"></div>
+          </div>
+        </div>
+
+        <!-- Tab: AI COACH -->
+        <div class="tab-panel hidden" id="tab-coach">
+          <div class="panel-inner">
+            <div class="section-title">NEXUS AI COACH</div>
+            <div class="chat-window" id="chat-window">
+              <div class="chat-welcome">
+                <div class="chat-welcome-icon">🤖</div>
+                <div class="chat-welcome-title">NEXUS AI</div>
+                <div class="chat-welcome-sub">Your personal life coach. Ask me anything — habits, productivity, mindset, training, business. I know your stats.</div>
+              </div>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="chat-input" class="chat-input" placeholder="Ask your coach anything..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+              <button class="chat-send-btn" onclick="sendChatMessage()">→</button>
+            </div>
+            <div class="chat-suggestions">
+              <button class="chat-chip" onclick="quickChat('What should I focus on today?')">What to focus on?</button>
+              <button class="chat-chip" onclick="quickChat('How do I build better habits?')">Build habits</button>
+              <button class="chat-chip" onclick="quickChat('Analyze my progress')">Analyze me</button>
+              <button class="chat-chip" onclick="quickChat('Give me a weekly plan')">Weekly plan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: ACTIVITY LOG -->
+        <div class="tab-panel hidden" id="tab-log">
+          <div class="panel-inner">
+            <div class="section-title">ACTIVITY LOG</div>
+            <div id="activity-log" class="activity-log"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Mobile bottom nav -->
+    <nav class="mobile-nav">
+      <a class="mnav-item active" onclick="switchTab('home',this)" data-tab="home"><span>⚔️</span>HOME</a>
+      <a class="mnav-item" onclick="switchTab('leaderboard',this)" data-tab="leaderboard"><span>🏆</span>RANK</a>
+      <a class="mnav-item" onclick="switchTab('coach',this)" data-tab="coach"><span>🤖</span>COACH</a>
+      <a class="mnav-item" onclick="switchTab('log',this)" data-tab="log"><span>📋</span>LOG</a>
+      <a class="mnav-item" onclick="handleLogout()"><span>⏏</span>EXIT</a>
+    </nav>
+  </div>
+
+  <!-- ADD TASK MODAL -->
+  <div id="modal-add-task" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-title">+ NEW TASK</div>
+      <div class="form-group">
+        <label class="form-label">TASK NAME</label>
+        <input type="text" id="new-task-name" class="form-input" placeholder="What will you conquer?" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label class="form-label">TYPE</label>
+        <div class="type-select">
+          <button class="type-btn active" onclick="setType(this,'daily')">DAILY</button>
+          <button class="type-btn" onclick="setType(this,'onetime')">ONE-TIME</button>
+          <button class="type-btn" onclick="setType(this,'habit')">HABIT</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">DIFFICULTY & XP</label>
+        <div class="diff-select">
+          <button class="diff-btn diff-easy" onclick="setDiff(this,'easy')">EASY +10</button>
+          <button class="diff-btn diff-medium active-diff" onclick="setDiff(this,'medium')">MED +25</button>
+          <button class="diff-btn diff-hard" onclick="setDiff(this,'hard')">HARD +50</button>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeAddTaskModal()">CANCEL</button>
+        <button class="btn-primary" onclick="submitAddTask()">ADD TASK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div id="modal-confirm" class="modal-overlay hidden">
+    <div class="modal-card confirm-card">
+      <div class="confirm-icon" id="confirm-icon">✓</div>
+      <div class="confirm-title" id="confirm-title">TASK COMPLETE!</div>
+      <div class="confirm-sub" id="confirm-sub">+25 XP earned</div>
+      <div class="confirm-actions">
+        <button class="btn-ghost" onclick="closeConfirm(false)" id="confirm-cancel-btn">UNDO</button>
+        <button class="btn-primary" onclick="closeConfirm(true)" id="confirm-ok-btn">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- XP POP CONTAINER -->
+  <div id="xp-pops" style="position:fixed;pointer-events:none;z-index:9999;top:0;left:0;width:100%;height:100%"></div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
