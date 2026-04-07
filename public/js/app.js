@@ -557,3 +557,40 @@ document.getElementById('modal-add-task').addEventListener('click', function(e) 
 document.getElementById('modal-confirm').addEventListener('click', function(e) {
   if (e.target === this) closeConfirm(false);
 });
+
+// ===== THEME TOGGLE =====
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('theme-btn');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '🌙';
+    localStorage.setItem('nexus-theme', 'light');
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = '☀️';
+    localStorage.setItem('nexus-theme', 'dark');
+  }
+}
+
+// Load saved theme on start
+(function() {
+  const saved = localStorage.getItem('nexus-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = saved === 'light' ? '🌙' : '☀️';
+  }
+})();
+
+// ===== PASSWORD TOGGLE =====
+function togglePass(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}

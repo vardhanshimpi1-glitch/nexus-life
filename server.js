@@ -8,6 +8,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Render's proxy — CRITICAL for cookies to work on Render
+app.set('trust proxy', 1);
+
 // Connect MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
@@ -25,12 +28,13 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
-    ttl: 7 * 24 * 60 * 60 // 7 days
+    ttl: 7 * 24 * 60 * 60
   }),
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production'
+    secure: true,
+    sameSite: 'none'
   }
 }));
 

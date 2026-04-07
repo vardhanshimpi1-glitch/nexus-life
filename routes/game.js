@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const requireAuth = require('../middleware/auth');
+const https = require('https');
 
 // Leaderboard — top 20 by XP
 router.get('/leaderboard', async (req, res) => {
@@ -27,7 +28,7 @@ router.get('/leaderboard', async (req, res) => {
   }
 });
 
-// AI Coach — full conversational
+// AI Coach — full conversational using https module (no fetch dependency issues)
 router.post('/ai-coach', requireAuth, async (req, res) => {
   try {
     const { message, history } = req.body;
@@ -38,7 +39,7 @@ router.post('/ai-coach', requireAuth, async (req, res) => {
     const pendingTasks = user.tasks.filter(t => !t.completed).map(t => t.title);
     const ld = user.getLevelTitle();
 
-    const systemPrompt = `You are NEXUS AI — the personal life coach inside NexusLife, a life gamification platform.
+    const systemPrompt = `You are NEXUS AI — the personal life coach inside NexusLife, a life gamification platform where users earn XP by completing real-life tasks.
 
 Player Profile:
 - Name: ${user.username}
@@ -47,10 +48,10 @@ Player Profile:
 - XP: ${user.xp}
 - Streak: ${user.streak} days
 - Goals: ${user.goals.join(', ') || 'Not set'}
-- Today's completed tasks: ${doneTasks.join(', ') || 'None yet'}
-- Pending tasks: ${pendingTasks.join(', ') || 'All done!'}
+- Today completed: ${doneTasks.join(', ') || 'None yet'}
+- Still pending: ${pendingTasks.join(', ') || 'All done!'}
 
-Your personality: You are direct, motivating, occasionally brutal, but always constructive. You speak like a high-performance coach — not a therapist. You use game language naturally (XP, level up, streak, boss fight, etc.) but not excessively. You give real, actionable advice. You answer ALL questions — about productivity, habits, fitness, money, mindset, study, anything. You reference the user's actual data when relevant. Keep responses concise but powerful — 3-6 sentences unless the user needs a detailed plan. Address them by name sometimes.`;
+Your personality: Direct, motivating, occasionally brutal but always constructive. You speak like a high-performance coach. Use game language naturally (XP, level up, streak, etc.) but not excessively. You answer ALL questions about productivity, habits, fitness, money, mindset, study, relationships, business — anything. Reference the user's actual data when relevant. Keep responses focused and powerful — 3-6 sentences unless user needs a detailed plan. Address them by name sometimes.`;
 
     const messages = [];
     if (history && Array.isArray(history)) {
@@ -59,28 +60,52 @@ Your personality: You are direct, motivating, occasionally brutal, but always co
     messages.push({ role: 'user', content: message });
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    if (!apiKey || apiKey.includes('YOUR_KEY')) {
+      return res.json({ reply: 'AI Coach is not configured yet. Add your ANTHROPIC_API_KEY to the environment variables.' });
+    }
+
+    const body = JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 600,
+      system: systemPrompt,
+      messages
+    });
+
+    const options = {
+      hostname: 'api.anthropic.com',
+      path: '/v1/messages',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 600,
-        system: systemPrompt,
-        messages
-      })
+        'anthropic-version': '2023-06-01',
+        'Content-Length': Buffer.byteLength(body)
+      }
+    };
+
+    const reply = await new Promise((resolve, reject) => {
+      const request = https.request(options, (response) => {
+        let data = '';
+        response.on('data', chunk => data += chunk);
+        response.on('end', () => {
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.error) reject(new Error(parsed.error.message));
+            else resolve(parsed.content[0].text);
+          } catch (e) {
+            reject(e);
+          }
+        });
+      });
+      request.on('error', reject);
+      request.write(body);
+      request.end();
     });
 
-    const data = await response.json();
-    if (data.error) return res.status(500).json({ error: data.error.message });
-    const reply = data.content[0].text;
     res.json({ reply });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'AI Coach unavailable' });
+    console.error('AI Coach error:', err.message);
+    res.status(500).json({ error: 'AI Coach unavailable: ' + err.message });
   }
 });
 

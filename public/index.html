@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <!-- LOADING SCREEN -->
   <div id="loader" class="loader">
     <div class="loader-inner">
       <div class="loader-logo">NEXUS<span>LIFE</span></div>
@@ -18,13 +17,13 @@
     </div>
   </div>
 
-  <!-- LANDING PAGE -->
+  <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Toggle Light/Dark">🌙</button>
+
+  <!-- LANDING -->
   <div id="page-landing" class="page hidden">
     <div class="landing-bg">
       <div class="grid-overlay"></div>
-      <div class="orb orb1"></div>
-      <div class="orb orb2"></div>
-      <div class="orb orb3"></div>
+      <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
     </div>
     <nav class="landing-nav">
       <div class="nav-logo">NEXUS<span>LIFE</span></div>
@@ -56,7 +55,7 @@
     </div>
   </div>
 
-  <!-- LOGIN PAGE -->
+  <!-- LOGIN -->
   <div id="page-login" class="page hidden">
     <div class="auth-bg"><div class="grid-overlay"></div></div>
     <div class="auth-container">
@@ -67,11 +66,14 @@
         <div id="login-error" class="auth-error hidden"></div>
         <div class="form-group">
           <label class="form-label">EMAIL</label>
-          <input type="email" id="login-email" class="form-input" placeholder="your@email.com">
+          <input type="email" id="login-email" class="form-input" placeholder="your@email.com" onkeydown="if(event.key==='Enter')handleLogin()">
         </div>
         <div class="form-group">
           <label class="form-label">PASSWORD</label>
-          <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
+          <div class="input-wrap">
+            <input type="password" id="login-pass" class="form-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleLogin()">
+            <button class="eye-btn" type="button" onclick="togglePass('login-pass',this)">👁</button>
+          </div>
         </div>
         <button class="btn-primary btn-full" onclick="handleLogin()">ENTER REALM →</button>
         <p class="auth-switch">New here? <a onclick="showPage('page-onboard')">Create your character</a></p>
@@ -85,7 +87,7 @@
     <div class="onboard-container">
       <div class="auth-logo" onclick="showPage('page-landing')">NEXUS<span>LIFE</span></div>
       <div class="onboard-progress">
-        <div class="onboard-step" id="ostep-1">01</div>
+        <div class="onboard-step active" id="ostep-1">01</div>
         <div class="onboard-line" id="oline-1"></div>
         <div class="onboard-step" id="ostep-2">02</div>
         <div class="onboard-line" id="oline-2"></div>
@@ -93,8 +95,6 @@
         <div class="onboard-line" id="oline-3"></div>
         <div class="onboard-step" id="ostep-4">04</div>
       </div>
-
-      <!-- Step 1: Identity -->
       <div class="onboard-panel active" id="opanel-1">
         <div class="auth-card">
           <div class="step-tag">STEP 1 / 4 — IDENTITY</div>
@@ -110,47 +110,30 @@
           </div>
           <div class="form-group">
             <label class="form-label">PASSWORD</label>
-            <input type="password" id="reg-pass" class="form-input" placeholder="Min 6 characters">
+            <div class="input-wrap">
+              <input type="password" id="reg-pass" class="form-input" placeholder="Min 6 characters">
+              <button class="eye-btn" type="button" onclick="togglePass('reg-pass',this)">👁</button>
+            </div>
           </div>
           <button class="btn-primary btn-full" onclick="onboardNext(1)">CONTINUE →</button>
           <p class="auth-switch">Have an account? <a onclick="showPage('page-login')">Log in</a></p>
         </div>
       </div>
-
-      <!-- Step 2: Class -->
       <div class="onboard-panel hidden" id="opanel-2">
         <div class="auth-card">
           <div class="step-tag">STEP 2 / 4 — CHARACTER CLASS</div>
           <h2 class="auth-title">Choose Your Class</h2>
           <p class="auth-sub">Defines your identity, default tasks & bonuses</p>
           <div class="class-grid">
-            <div class="class-card" onclick="selectClass(this,'Warrior')" data-class="Warrior">
-              <div class="class-icon-wrap">⚔️</div>
-              <div class="class-name">WARRIOR</div>
-              <div class="class-desc">Fitness & Physical Power</div>
-            </div>
-            <div class="class-card" onclick="selectClass(this,'Scholar')" data-class="Scholar">
-              <div class="class-icon-wrap">📚</div>
-              <div class="class-name">SCHOLAR</div>
-              <div class="class-desc">Study & Deep Knowledge</div>
-            </div>
-            <div class="class-card" onclick="selectClass(this,'Builder')" data-class="Builder">
-              <div class="class-icon-wrap">🔨</div>
-              <div class="class-name">BUILDER</div>
-              <div class="class-desc">Work, Hustle & Wealth</div>
-            </div>
-            <div class="class-card" onclick="selectClass(this,'Monk')" data-class="Monk">
-              <div class="class-icon-wrap">🧘</div>
-              <div class="class-name">MONK</div>
-              <div class="class-desc">Discipline & Mindset</div>
-            </div>
+            <div class="class-card" onclick="selectClass(this,'Warrior')"><div class="class-icon-wrap">⚔️</div><div class="class-name">WARRIOR</div><div class="class-desc">Fitness & Physical Power</div></div>
+            <div class="class-card" onclick="selectClass(this,'Scholar')"><div class="class-icon-wrap">📚</div><div class="class-name">SCHOLAR</div><div class="class-desc">Study & Deep Knowledge</div></div>
+            <div class="class-card" onclick="selectClass(this,'Builder')"><div class="class-icon-wrap">🔨</div><div class="class-name">BUILDER</div><div class="class-desc">Work, Hustle & Wealth</div></div>
+            <div class="class-card" onclick="selectClass(this,'Monk')"><div class="class-icon-wrap">🧘</div><div class="class-name">MONK</div><div class="class-desc">Discipline & Mindset</div></div>
           </div>
           <button class="btn-primary btn-full" id="cls-next-btn" onclick="onboardNext(2)" disabled>CONTINUE →</button>
-          <button class="btn-ghost btn-full" onclick="onboardBack(2)">← BACK</button>
+          <button class="btn-ghost btn-full" onclick="onboardBack(2)" style="margin-top:10px">← BACK</button>
         </div>
       </div>
-
-      <!-- Step 3: Goals -->
       <div class="onboard-panel hidden" id="opanel-3">
         <div class="auth-card">
           <div class="step-tag">STEP 3 / 4 — LIFE GOALS</div>
@@ -165,11 +148,9 @@
             <button class="goal-btn" onclick="toggleGoal(this,'Social')"><span class="goal-check"></span>🌍 Social</button>
           </div>
           <button class="btn-primary btn-full" id="goals-next-btn" onclick="onboardNext(3)" disabled>CONTINUE →</button>
-          <button class="btn-ghost btn-full" onclick="onboardBack(3)">← BACK</button>
+          <button class="btn-ghost btn-full" onclick="onboardBack(3)" style="margin-top:10px">← BACK</button>
         </div>
       </div>
-
-      <!-- Step 4: Avatar -->
       <div class="onboard-panel hidden" id="opanel-4">
         <div class="auth-card">
           <div class="step-tag">STEP 4 / 4 — AVATAR</div>
@@ -186,7 +167,7 @@
             <div class="avatar-opt" onclick="selectAvatar(this,'👁️')">👁️</div>
           </div>
           <button class="btn-primary btn-full" id="av-next-btn" onclick="handleRegister()" disabled>ENTER NEXUSLIFE →</button>
-          <button class="btn-ghost btn-full" onclick="onboardBack(4)">← BACK</button>
+          <button class="btn-ghost btn-full" onclick="onboardBack(4)" style="margin-top:10px">← BACK</button>
         </div>
       </div>
     </div>
@@ -195,7 +176,6 @@
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page hidden">
     <div class="dash-layout">
-      <!-- Sidebar (desktop) -->
       <aside class="sidebar">
         <div class="sidebar-logo">NEXUS<span>LIFE</span></div>
         <nav class="sidebar-nav">
@@ -213,10 +193,7 @@
           <button class="logout-btn" onclick="handleLogout()" title="Logout">⏏</button>
         </div>
       </aside>
-
-      <!-- Main content -->
       <main class="dash-main">
-        <!-- Top bar (mobile) -->
         <div class="mobile-topbar">
           <div class="nav-logo">NEXUS<span>LIFE</span></div>
           <div class="mobile-topbar-right">
@@ -224,8 +201,6 @@
             <div class="mobile-avatar" id="m-avatar">⚡</div>
           </div>
         </div>
-
-        <!-- XP Header -->
         <div class="xp-header-section">
           <div class="xp-user-info">
             <div class="xp-avatar" id="xp-avatar">⚡</div>
@@ -246,8 +221,6 @@
           </div>
           <div class="xp-bar-track"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
         </div>
-
-        <!-- Tab: HOME -->
         <div class="tab-panel active" id="tab-home">
           <div class="panel-inner">
             <div class="section-header">
@@ -262,8 +235,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Tab: LEADERBOARD -->
         <div class="tab-panel hidden" id="tab-leaderboard">
           <div class="panel-inner">
             <div class="section-header">
@@ -273,8 +244,6 @@
             <div id="lb-list" class="lb-list"></div>
           </div>
         </div>
-
-        <!-- Tab: AI COACH -->
         <div class="tab-panel hidden" id="tab-coach">
           <div class="panel-inner">
             <div class="section-title">NEXUS AI COACH</div>
@@ -282,7 +251,7 @@
               <div class="chat-welcome">
                 <div class="chat-welcome-icon">🤖</div>
                 <div class="chat-welcome-title">NEXUS AI</div>
-                <div class="chat-welcome-sub">Your personal life coach. Ask me anything — habits, productivity, mindset, training, business. I know your stats.</div>
+                <div class="chat-welcome-sub">Your personal life coach. Ask me anything — habits, productivity, mindset, fitness, business, study. I know your stats and I'll push you forward.</div>
               </div>
             </div>
             <div class="chat-input-row">
@@ -292,13 +261,11 @@
             <div class="chat-suggestions">
               <button class="chat-chip" onclick="quickChat('What should I focus on today?')">What to focus on?</button>
               <button class="chat-chip" onclick="quickChat('How do I build better habits?')">Build habits</button>
-              <button class="chat-chip" onclick="quickChat('Analyze my progress')">Analyze me</button>
-              <button class="chat-chip" onclick="quickChat('Give me a weekly plan')">Weekly plan</button>
+              <button class="chat-chip" onclick="quickChat('Analyze my progress and give me honest feedback')">Analyze me</button>
+              <button class="chat-chip" onclick="quickChat('Give me a weekly plan based on my goals')">Weekly plan</button>
             </div>
           </div>
         </div>
-
-        <!-- Tab: ACTIVITY LOG -->
         <div class="tab-panel hidden" id="tab-log">
           <div class="panel-inner">
             <div class="section-title">ACTIVITY LOG</div>
@@ -307,8 +274,6 @@
         </div>
       </main>
     </div>
-
-    <!-- Mobile bottom nav -->
     <nav class="mobile-nav">
       <a class="mnav-item active" onclick="switchTab('home',this)" data-tab="home"><span>⚔️</span>HOME</a>
       <a class="mnav-item" onclick="switchTab('leaderboard',this)" data-tab="leaderboard"><span>🏆</span>RANK</a>
@@ -324,7 +289,7 @@
       <div class="modal-title">+ NEW TASK</div>
       <div class="form-group">
         <label class="form-label">TASK NAME</label>
-        <input type="text" id="new-task-name" class="form-input" placeholder="What will you conquer?" maxlength="60">
+        <input type="text" id="new-task-name" class="form-input" placeholder="What will you conquer?" maxlength="60" onkeydown="if(event.key==='Enter')submitAddTask()">
       </div>
       <div class="form-group">
         <label class="form-label">TYPE</label>
@@ -356,18 +321,14 @@
       <div class="confirm-title" id="confirm-title">TASK COMPLETE!</div>
       <div class="confirm-sub" id="confirm-sub">+25 XP earned</div>
       <div class="confirm-actions">
-        <button class="btn-ghost" onclick="closeConfirm(false)" id="confirm-cancel-btn">UNDO</button>
+        <button class="btn-ghost" onclick="closeConfirm(false)" id="confirm-cancel-btn">CANCEL</button>
         <button class="btn-primary" onclick="closeConfirm(true)" id="confirm-ok-btn">CONFIRM</button>
       </div>
     </div>
   </div>
 
-  <!-- XP POP CONTAINER -->
   <div id="xp-pops" style="position:fixed;pointer-events:none;z-index:9999;top:0;left:0;width:100%;height:100%"></div>
-
-  <!-- TOAST -->
   <div id="toast" class="toast hidden"></div>
-
   <script src="/js/app.js"></script>
 </body>
 </html>
